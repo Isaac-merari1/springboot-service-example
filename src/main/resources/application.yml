@@ -1,0 +1,93 @@
+server:
+  port: 8082
+
+welcome:
+  message: You are welcome
+
+#in memory db
+
+#spring:
+#  h2:
+#    console:
+#      enabled: true
+#  datasource:
+#    url: jdbc:h2:mem:mydb
+#    driver-class-name: org.h2.Driver
+#    username: merari
+#    password: password
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+
+#profiling
+spring:
+  profiles:
+    active: qa
+
+#actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # Expose all endpoints
+        exclude: env  # Exclude specific endpoints (e.g., env)
+  endpoint:
+    health:
+      show-details: always  # Show detailed health information
+  info:
+    app:
+      name: "Your Application"
+      description: "Description of your application"
+    version: "1.0.0"
+
+---
+
+spring:
+#  profiles: qa
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/departmentdb-dev
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: true
+    show-sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: qa
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/departmentdb-qa
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: true
+    show-sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/departmentdb
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: true
+    show-sql: true
